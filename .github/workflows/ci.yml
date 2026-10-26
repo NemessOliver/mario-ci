@@ -1,0 +1,15 @@
+# GitHub Actions: runs the Mario tests on a fresh Linux computer after every push.
+# YAML rule: indent with SPACES only (2 per level, never tabs). The indent shows what belongs to what.
+
+name: Mario CI
+on: [push]                        # >> start this workflow on every push, to any branch
+jobs:
+  test:                           # >> one job, called "test"
+    runs-on: ubuntu-latest        # >> GitHub gives us an empty Ubuntu machine
+    steps:                        # >> the steps run top to bottom; one fails -> the job is red
+      - uses: actions/checkout@v4         # >> copy our repo onto that machine
+      - uses: actions/setup-python@v5     # >> install Python...
+        with:                             # >> ...with these settings (8 spaces: same level as "uses")
+          python-version: "3.12"          # >> in quotes, so YAML keeps it as text (3.10 would become 3.1)
+      - run: python -m pip install pytest # >> install pytest
+      - run: python -m pytest -q          # >> run every test_*.py; a failing test = red cross on GitHub
